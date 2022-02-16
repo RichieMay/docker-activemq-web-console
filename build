@@ -1,0 +1,11 @@
+application=`cat application|head -n 1`
+name=`echo ${application}|awk '{print $1}'`
+version=`echo ${application}|awk '{print $2}'`
+
+sed -i "/ENV APPLICATION_NAME/c\ENV APPLICATION_NAME        ${name}" Dockerfile
+sed -i "/ENV APPLICATION_VERSION/c\ENV APPLICATION_VERSION     ${version}" Dockerfile
+
+#docker build -t docker.kindsmarter.com:8000/repository/docker-release/${name}:latest .
+#docker tag docker.kindsmarter.com:8000/repository/docker-release/${name}:latest docker.kindsmarter.com:8000/repository/docker-release/${name}:${version}
+docker build -t richiemay/${name}:latest .
+docker tag richiemay/${name}:latest richiemay/${name}:${version}
